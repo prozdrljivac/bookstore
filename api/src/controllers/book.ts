@@ -1,4 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
+import { validationResult } from 'express-validator';
+
 import prisma from '../prisma';
 
 const getBooks = async (req: Request, res: Response, next: NextFunction) => {
@@ -23,6 +25,13 @@ const getBook = async (req: Request, res: Response, next: NextFunction) => {
 
 const createBook = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res
+        .status(400)
+        .json({ message: 'Validation failed', errors: errors.array() });
+    }
+
     const result = await prisma.book.create({ data: req.body });
     res.status(201).json(result);
   } catch (error) {
