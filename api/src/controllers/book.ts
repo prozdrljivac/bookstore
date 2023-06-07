@@ -5,7 +5,15 @@ import prisma from '../prisma';
 
 const getBooks = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const books = await prisma.book.findMany();
+    const { search } = req.query;
+    const books = await prisma.book.findMany({
+      where: {
+        name: {
+          contains: search as string
+        }
+      }
+    });
+
     res.status(200).json(books);
   } catch (error) {
     res.status(500).json({ message: 'Something went wrong' });
