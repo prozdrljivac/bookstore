@@ -1,7 +1,8 @@
 import express, { Express } from 'express';
 import dotenv from 'dotenv';
 
-import bookRoutes from './routes/book';
+import authRouts from './auth/routes';
+import bookRoutes from './books/routes';
 
 dotenv.config();
 
@@ -10,6 +11,7 @@ const port = process.env.SERVER_PORT;
 
 app.use(express.json());
 
+app.use(authRouts);
 app.use(bookRoutes);
 
 app.listen(port);

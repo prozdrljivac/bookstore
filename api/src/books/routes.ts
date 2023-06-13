@@ -1,10 +1,7 @@
 import express from 'express';
 
-import bookController from '../controllers/book';
-import {
-  CREATE_BOOK_VALIDATOR,
-  UPDATE_BOOK_VALIDATOR
-} from '../validators/books';
+import bookController from './controllers';
+import { CREATE_BOOK_VALIDATOR, UPDATE_BOOK_VALIDATOR } from './validators';
 
 const router = express.Router();
 
