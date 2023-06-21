@@ -12,6 +12,6 @@ const port = process.env.SERVER_PORT;
 app.use(express.json());
 
 app.use(authRouts);
-app.use(bookRoutes);
+app.use('/books', bookRoutes);
 
 app.listen(port);
