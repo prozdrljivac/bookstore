@@ -6,6 +6,6 @@ import { SIGN_UP_VALIDATOR } from './validators';
 const router = express.Router();
 
 router.post('/signup', SIGN_UP_VALIDATOR, authController.signUp);
-router.post('signin');
+router.post('/signin', authController.signIn);
 
 export default router;
