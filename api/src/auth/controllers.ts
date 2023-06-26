@@ -3,6 +3,9 @@ import { validationResult } from 'express-validator';
 import argon from 'argon2';
 import jwt from 'jsonwebtoken';
 
+// TODO Create a @services shortcut
+// Add prisma to services
+import { emailSender } from '../services';
 import prisma from '../prisma';
 
 const signUp = async (req: Request, res: Response, next: NextFunction) => {
@@ -21,6 +24,22 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
         password: hashedPassword
       }
     });
+
+    // TODO create a task that will send Welcome emails
+    // or something that will not block the app
+    // Check bullmq
+    const emailRes = await emailSender.sendMail({
+      to: email,
+      from: 'bookstore@bookstore.com',
+      subject: 'Successful sign up!',
+      html: '<h1>Welcome!</h1>'
+    });
+
+    if (emailRes.statusCode !== 200) {
+      return res
+        .status(503)
+        .json({ errors: 'Something went wrong when sending email' });
+    }
 
     res.status(201).json({ name: usr.name, email: usr.email });
   } catch (error) {
